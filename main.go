@@ -50,7 +50,7 @@ func (g *GameMap) movePlayer(p *Player, direction string) error {
 		playerPosition.X--
 		g.positions[p] = playerPosition
 	default:
-		return errors.New("Непрделенное движение, " + direction)
+		return errors.New("Неопрделенное движение, " + direction)
 	}
 	return nil
 }
