@@ -24,10 +24,10 @@ func (p *Position) addY(i int) {
 
 type GameMap struct {
 	gameMap   [][]int
-	positions map[*Player]Position
+	positions map[*Player]*Position
 }
 
-func createGameMap(size int, positions map[*Player]Position) GameMap {
+func createGameMap(size int, positions map[*Player]*Position) GameMap {
 	var gameMapArr = make([][]int, size)
 	for i := range gameMapArr {
 		gameMapArr[i] = make([]int, size)
@@ -56,16 +56,23 @@ func (g *GameMap) movePlayer(p *Player, direction string) error {
 }
 
 func (g *GameMap) print() {
-	fmt.Println(*g)
+	fmt.Println(g.gameMap)
+
+	for k, v := range g.positions {
+    	fmt.Printf("key[%s] value[%s]\n", k, v)
+	}
 }
 
 func main() {
 	fmt.Println("fmt mock")
 	player1 := Player{"player1"}
 	player2 := new(Player)
-	positions := make(map[*Player]Position)
-	positions[&player1] = Position{2, 2}
-	positions[player2] = Position{1, 1}
+	player2.name = "player2"
+	// fmt.Println(player1)
+	// fmt.Println(player2)
+	positions := make(map[*Player]*Position)
+	positions[&player1] = &Position{2, 2}
+	positions[player2] = &Position{1, 1}
 	gameMap := createGameMap(5, positions)
 	gameMap.print()
 	gameMap.movePlayer(&player1, "up")
