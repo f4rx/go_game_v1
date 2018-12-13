@@ -15,6 +15,12 @@ type Position struct {
 	Y int
 }
 
+type Game struct{
+	gameMap *GameMap
+	players []*Player
+	turn *Player
+}
+
 func (p *Position) addX(i int) {
 	p.X += i
 }
@@ -64,15 +70,17 @@ func (g *GameMap) print() {
 	}
 }
 
-func chooseGameAction(str *string) error {
+func (g *Game) gameAction(str *string) error {
 	switch *str {
 	case "exit":
 		fmt.Println("goodbuy")
 		os.Exit(0)
 	case "1", "2", "3", "4":
+		g.gameMap.movePlayer(g.turn, *str)
 		fmt.Println("move")
 		//func createGameMap(size int, positions map[*Player]*Position) GameMap {
 	case "5":
+		g.gameMap.print()
 		fmt.Println("print fucntion ")
 		//func (g *GameMap) print() {
 	default:
@@ -97,6 +105,11 @@ func main() {
 	gameMap.movePlayer(player2, "down")
 	gameMap.print()
 
+	game := new(Game)
+	game.players = append(game.players, &player1)
+	game.players = append(game.players, player2)
+	game.gameMap = &gameMap
+	game.turn = &player1
 
     var input string
 
@@ -104,13 +117,14 @@ func main() {
 		fmt.Printf("Ход игрока: %s\n", player1.name)
 		fmt.Printf("Выберите направление: 1. Вверх 2. Вниз 3. Влево 4. Вправо 5. Печать карты\n")
 		fmt.Scanln(&input)
-		chooseGameAction(&input)
-		fmt.Print(input)
-		err := gameMap.movePlayer(&player1, input)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
+		game.gameAction(&input)
+		// chooseGameAction(&input)
+		// fmt.Print(input)
+		// err := gameMap.movePlayer(&player1, input)
+		// if err != nil {
+		// 	fmt.Println(err)
+		// 	continue
+		// }
 
 	}
 }
