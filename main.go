@@ -46,16 +46,33 @@ func createGameMap(size int, positions map[*Player]*Position) GameMap {
 func (g *GameMap) movePlayer(p *Player, direction string) error {
 	switch direction {
 	case "3":
-		fmt.Println("move left")
+		// fmt.Println("move left")
+		if g.positions[p].X == 0 {
+			g.positions[p].X = len(g.gameMap) - 1
+		} else {
+			g.positions[p].X--
+		}
 	case "4":
-		fmt.Println("move right")
+		// fmt.Println("move right")
+		if g.positions[p].X == len(g.gameMap) - 1 {
+			g.positions[p].X = 0
+		} else {
+			g.positions[p].X++
+		}
 	case "2":
-		fmt.Println("move down")
+		// fmt.Println("move down")
+		if g.positions[p].Y == len(g.gameMap) - 1 {
+			g.positions[p].Y = 0
+		} else {
+			g.positions[p].Y++
+		}
 	case "1":
-		fmt.Println("move up")
-		playerPosition := g.positions[p]
-		playerPosition.X--
-		g.positions[p] = playerPosition
+		// fmt.Println("move up")
+		if g.positions[p].Y == 0 {
+			g.positions[p].Y = len(g.gameMap) - 1
+		} else {
+			g.positions[p].Y--
+		}
 	default:
 		return errors.New("Неопрделенное движение, " + direction)
 	}
@@ -63,11 +80,38 @@ func (g *GameMap) movePlayer(p *Player, direction string) error {
 }
 
 func (g *GameMap) print() {
-	fmt.Println(g.gameMap)
+	var positions []*Position
 
-	for k, v := range g.positions {
-    	fmt.Printf("key[%s] value[%s]\n", k, v)
+	for _, v := range g.positions {
+		positions = append(positions, v)
 	}
+
+	for y := 0; y < len(g.gameMap); y++ {
+		for x := 0; x < len(g.gameMap[y]); x++ {
+			char := "x"
+			for _, v := range positions {
+				if x == v.X && y == v.Y {
+					char = "P"
+				}
+				// fmt.Println(p, i)
+			}
+			// if player.position.positionX == x && player.position.positionY == y {
+			// 	char = "P"
+			// } else if b[y] == 1 {
+			// 	char = "R"
+			// } else if b[y] != 0 {
+			// 	char = strconv.Itoa(b[y])
+			// }
+			fmt.Print(char, " ")
+		}
+		fmt.Println()
+	}
+
+	// for k, v := range g.positions {
+    // 	fmt.Printf("key[%s] value[%s]\n", k, v)
+	// }
+	// fmt.Printf("%#v", g.positions)
+
 }
 
 func (g *Game) gameAction(str *string) error {
@@ -81,7 +125,7 @@ func (g *Game) gameAction(str *string) error {
 		//func createGameMap(size int, positions map[*Player]*Position) GameMap {
 	case "5":
 		g.gameMap.print()
-		fmt.Println("print fucntion ")
+		// fmt.Println("print fucntion ")
 		//func (g *GameMap) print() {
 	default:
 		return nil
@@ -100,10 +144,10 @@ func main() {
 	positions[&player1] = &Position{2, 2}
 	positions[player2] = &Position{1, 1}
 	gameMap := createGameMap(5, positions)
-	gameMap.print()
-	gameMap.movePlayer(&player1, "up")
-	gameMap.movePlayer(player2, "down")
-	gameMap.print()
+	// gameMap.print()
+	// gameMap.movePlayer(&player1, "up")
+	// gameMap.movePlayer(player2, "down")
+	// gameMap.print()
 
 	game := new(Game)
 	game.players = append(game.players, &player1)
@@ -113,7 +157,7 @@ func main() {
 
     var input string
 
-	for ;; {
+	for {
 		fmt.Printf("Ход игрока: %s\n", player1.name)
 		fmt.Printf("Выберите направление: 1. Вверх 2. Вниз 3. Влево 4. Вправо 5. Печать карты\n")
 		fmt.Scanln(&input)
