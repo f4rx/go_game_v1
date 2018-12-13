@@ -15,10 +15,10 @@ type Position struct {
 	Y int
 }
 
-type Game struct{
+type Game struct {
 	gameMap *GameMap
 	players []*Player
-	turn *Player
+	turn    *Player
 }
 
 func (p *Position) addX(i int) {
@@ -54,14 +54,14 @@ func (g *GameMap) movePlayer(p *Player, direction string) error {
 		}
 	case "4":
 		// fmt.Println("move right")
-		if g.positions[p].X == len(g.gameMap) - 1 {
+		if g.positions[p].X == len(g.gameMap)-1 {
 			g.positions[p].X = 0
 		} else {
 			g.positions[p].X++
 		}
 	case "2":
 		// fmt.Println("move down")
-		if g.positions[p].Y == len(g.gameMap) - 1 {
+		if g.positions[p].Y == len(g.gameMap)-1 {
 			g.positions[p].Y = 0
 		} else {
 			g.positions[p].Y++
@@ -108,7 +108,7 @@ func (g *GameMap) print() {
 	}
 
 	// for k, v := range g.positions {
-    // 	fmt.Printf("key[%s] value[%s]\n", k, v)
+	// 	fmt.Printf("key[%s] value[%s]\n", k, v)
 	// }
 	// fmt.Printf("%#v", g.positions)
 
@@ -155,7 +155,7 @@ func main() {
 	game.gameMap = &gameMap
 	game.turn = &player1
 
-    var input string
+	var input string
 
 	for {
 		fmt.Printf("Ход игрока: %s\n", player1.name)
