@@ -46,28 +46,24 @@ func createGameMap(size int, positions map[*Player]*Position) GameMap {
 func (g *GameMap) movePlayer(p *Player, direction string) error {
 	switch direction {
 	case "3":
-		// fmt.Println("move left")
 		if g.positions[p].X == 0 {
 			g.positions[p].X = len(g.gameMap) - 1
 		} else {
 			g.positions[p].X--
 		}
 	case "4":
-		// fmt.Println("move right")
 		if g.positions[p].X == len(g.gameMap)-1 {
 			g.positions[p].X = 0
 		} else {
 			g.positions[p].X++
 		}
 	case "2":
-		// fmt.Println("move down")
 		if g.positions[p].Y == len(g.gameMap)-1 {
 			g.positions[p].Y = 0
 		} else {
 			g.positions[p].Y++
 		}
 	case "1":
-		// fmt.Println("move up")
 		if g.positions[p].Y == 0 {
 			g.positions[p].Y = len(g.gameMap) - 1
 		} else {
@@ -93,15 +89,7 @@ func (g *GameMap) print() {
 				if x == v.X && y == v.Y {
 					char = "P"
 				}
-				// fmt.Println(p, i)
 			}
-			// if player.position.positionX == x && player.position.positionY == y {
-			// 	char = "P"
-			// } else if b[y] == 1 {
-			// 	char = "R"
-			// } else if b[y] != 0 {
-			// 	char = strconv.Itoa(b[y])
-			// }
 			fmt.Print(char, " ")
 		}
 		fmt.Println()
@@ -122,11 +110,8 @@ func (g *Game) gameAction(str *string) error {
 	case "1", "2", "3", "4":
 		g.gameMap.movePlayer(g.turn, *str)
 		fmt.Println("move")
-		//func createGameMap(size int, positions map[*Player]*Position) GameMap {
 	case "5":
 		g.gameMap.print()
-		// fmt.Println("print fucntion ")
-		//func (g *GameMap) print() {
 	default:
 		return nil
 	}
