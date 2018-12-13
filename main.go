@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"os"
 )
 
 type Player struct {
@@ -38,13 +39,13 @@ func createGameMap(size int, positions map[*Player]*Position) GameMap {
 
 func (g *GameMap) movePlayer(p *Player, direction string) error {
 	switch direction {
-	case "left":
+	case "3":
 		fmt.Println("move left")
-	case "right":
+	case "4":
 		fmt.Println("move right")
-	case "down":
+	case "2":
 		fmt.Println("move down")
-	case "up":
+	case "1":
 		fmt.Println("move up")
 		playerPosition := g.positions[p]
 		playerPosition.X--
@@ -63,6 +64,23 @@ func (g *GameMap) print() {
 	}
 }
 
+func chooseGameAction(str *string) error {
+	switch *str {
+	case "exit":
+		fmt.Println("goodbuy")
+		os.Exit(0)
+	case "1", "2", "3", "4":
+		fmt.Println("move")
+		//func createGameMap(size int, positions map[*Player]*Position) GameMap {
+	case "5":
+		fmt.Println("print fucntion ")
+		//func (g *GameMap) print() {
+	default:
+		return nil
+	}
+	return nil
+}
+
 func main() {
 	fmt.Println("fmt mock")
 	player1 := Player{"player1"}
@@ -78,4 +96,21 @@ func main() {
 	gameMap.movePlayer(&player1, "up")
 	gameMap.movePlayer(player2, "down")
 	gameMap.print()
+
+
+    var input string
+
+	for ;; {
+		fmt.Printf("Ход игрока: %s\n", player1.name)
+		fmt.Printf("Выберите направление: 1. Вверх 2. Вниз 3. Влево 4. Вправо 5. Печать карты\n")
+		fmt.Scanln(&input)
+		chooseGameAction(&input)
+		fmt.Print(input)
+		err := gameMap.movePlayer(&player1, input)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+	}
 }
