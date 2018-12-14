@@ -4,10 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"github.com/fatih/color"
+
 )
 
 type Player struct {
 	name string
+	color string
 }
 
 type Position struct {
@@ -79,6 +82,19 @@ func (g *GameMap) movePlayer(p *Player, direction string) error {
 	return nil
 }
 
+func getColor(colorText string) func(a ...interface{}) string {
+	switch colorText {
+	case "red":
+		return color.New(color.FgRed).SprintFunc()
+	case "yellow":
+		return color.New(color.FgYellow).SprintFunc()
+	default:
+		return color.New(color.FgBlack).SprintFunc()
+	}
+
+}
+
+
 func (g *GameMap) print() {
 	var positions []*Position
 
@@ -88,13 +104,17 @@ func (g *GameMap) print() {
 
 	for y := 0; y < len(g.gameMap); y++ {
 		for x := 0; x < len(g.gameMap[y]); x++ {
+			colorText := getColor("black")
 			char := "x"
-			for _, v := range positions {
-				if x == v.X && y == v.Y {
+			for player, position := range g.positions {
+				if x == position.X && y == position.Y {
+
+					// fmt.Printf("this is a %s and this is %s.\n", yellow("warning"), red("error"))
 					char = "P"
+					colorText = getColor(player.color)
 				}
 			}
-			fmt.Print(char, " ")
+			fmt.Printf("%s ", colorText(char))
 		}
 		fmt.Println()
 	}
@@ -106,13 +126,13 @@ func (g *GameMap) print() {
 
 }
 
-func (g *Game) gameAction(str *string) error {
-	switch *str {
+func (g *Game) gameAction(str string) error {
+	switch str {
 	case "exit":
 		fmt.Println("goodbuy")
 		os.Exit(0)
 	case "1", "2", "3", "4":
-		g.gameMap.movePlayer(g.turn, *str)
+		g.gameMap.movePlayer(g.turn, str)
 		// fmt.Println("move")
 	case "5":
 		g.gameMap.print()
@@ -124,9 +144,10 @@ func (g *Game) gameAction(str *string) error {
 
 func main() {
 	fmt.Println("fmt mock")
-	player1 := Player{"player1"}
+	player1 := Player{"player1", "red"}
 	player2 := new(Player)
 	player2.name = "player2"
+	player2.color = "yellow"
 	// fmt.Println(player1)
 	// fmt.Println(player2)
 	positions := make(map[*Player]*Position)
@@ -152,7 +173,7 @@ func main() {
 		fmt.Printf("Ход игрока: %s\n", player1.name)
 		fmt.Printf("Выберите направление: 1. Вверх 2. Вниз 3. Влево 4. Вправо 5. Печать карты\n")
 		fmt.Scanln(&input)
-		game.gameAction(&input)
+		game.gameAction(input)
 		// chooseGameAction(&input)
 		// fmt.Print(input)
 		// err := gameMap.movePlayer(&player1, input)
