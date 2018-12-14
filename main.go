@@ -51,24 +51,28 @@ func (g *GameMap) movePlayer(p *Player, direction string) error {
 		} else {
 			g.positions[p].X--
 		}
+		g.print()
 	case "4":
 		if g.positions[p].X == len(g.gameMap)-1 {
 			g.positions[p].X = 0
 		} else {
 			g.positions[p].X++
 		}
+		g.print()
 	case "2":
 		if g.positions[p].Y == len(g.gameMap)-1 {
 			g.positions[p].Y = 0
 		} else {
 			g.positions[p].Y++
 		}
+		g.print()
 	case "1":
 		if g.positions[p].Y == 0 {
 			g.positions[p].Y = len(g.gameMap) - 1
 		} else {
 			g.positions[p].Y--
 		}
+		g.print()
 	default:
 		return errors.New("Неопрделенное движение, " + direction)
 	}
@@ -109,7 +113,7 @@ func (g *Game) gameAction(str *string) error {
 		os.Exit(0)
 	case "1", "2", "3", "4":
 		g.gameMap.movePlayer(g.turn, *str)
-		fmt.Println("move")
+		// fmt.Println("move")
 	case "5":
 		g.gameMap.print()
 	default:
@@ -139,6 +143,8 @@ func main() {
 	game.players = append(game.players, player2)
 	game.gameMap = &gameMap
 	game.turn = &player1
+	game.gameMap.print()
+
 
 	var input string
 
